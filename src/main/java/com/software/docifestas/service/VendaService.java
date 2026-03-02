@@ -1,4 +1,4 @@
 package com.software.docifestas.service;
 
-public class VendasService {
+public class VendaService {
 }

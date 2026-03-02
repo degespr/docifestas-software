@@ -1,4 +1,4 @@
 package com.software.docifestas.controller;
 
-public class VendasController {
+public class VendaController {
 }
