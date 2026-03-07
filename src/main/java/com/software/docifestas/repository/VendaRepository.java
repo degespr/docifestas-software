@@ -1,4 +1,10 @@
 package com.software.docifestas.repository;
 
-public class VendaRepository {
+import com.software.docifestas.model.Venda;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface VendaRepository extends JpaRepository<Venda, Long> {
+
 }
