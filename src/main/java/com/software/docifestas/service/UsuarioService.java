@@ -58,4 +58,19 @@ public class UsuarioService {
 
         }   throw new IllegalArgumentException("Usuário não encontrado!");
     }
+
+    public Usuario atualizarUsuario(Long id, Usuario usuario) {
+        Usuario usuarioExistente = buscarPorId(id);
+
+        usuarioExistente.setNome(usuario.getNome());
+        usuarioExistente.setEmail(usuario.getEmail());
+        usuarioExistente.setSenha(usuario.getSenha());
+
+        return usuarioRepository.save(usuarioExistente);
+    }
+
+    public void deletarUsuario(Long id) {
+        buscarPorId(id);
+        usuarioRepository.deleteById(id);
+    }
 }

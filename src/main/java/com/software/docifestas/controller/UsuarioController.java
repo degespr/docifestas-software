@@ -30,4 +30,14 @@ public class UsuarioController {
     public Usuario buscarPorId(@PathVariable Long id) {
         return usuarioService.buscarPorId(id);
     }
+
+    @PutMapping("/{id}")
+    public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        return usuarioService.atualizarUsuario(id, usuario);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletarUsuario(@PathVariable Long id) {
+        usuarioService.deletarUsuario(id);
+    }
 }
