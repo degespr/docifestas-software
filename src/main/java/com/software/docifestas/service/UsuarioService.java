@@ -14,7 +14,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public Usuario salvar(Usuario usuario) {
-// Code Run
+    // Code Run
         // Validation Nome
         if (usuario.getNome() == null) {
             throw new IllegalArgumentException("Nome inválido! Insira um nome válido.");
@@ -50,6 +50,7 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    // MTS
     public Usuario buscarPorId(Long id) {
 
     Optional<Usuario> buscaCompleta = usuarioRepository.findById(id);

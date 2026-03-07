@@ -15,20 +15,43 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     public Produto salvar(Produto produto) {
-        // 1. O repository busca no banco e guarda o resultado na "caixa" (Optional)
         Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(produto.getProduto());
 
-        // 2. Você verifica: "A caixa está cheia? (Ou seja, o produto já existe?)"
         if (produtoNoBanco.isPresent()) {
             throw new RuntimeException("Já existe um produto com este nome!");
         }
 
-        // 3. Se a caixa estiver vazia, o código chega aqui e salva
         return produtoRepository.save(produto);
     }
 
     // Code Rule - Extras
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();
+    }
+
+    // MTS
+    public Produto buscarPorId(Long id) {
+
+        Optional<Produto> buscarProduto = produtoRepository.findById(id);
+            if (buscarProduto.isPresent()) {
+                return buscarProduto.get();
+
+            } throw new IllegalArgumentException("Produto não encontrado!");
+        }
+
+    public Produto atualizarProduto(Long id, Produto produto) {
+        Produto produtoNoBanco = buscarPorId(id);
+
+        produtoNoBanco.setProduto(produto.getProduto());
+        produtoNoBanco.setCategoria(produto.getCategoria());
+        produtoNoBanco.setPreco(produto.getPreco());
+        produtoNoBanco.setEstoque(produto.getEstoque());
+
+        return produtoRepository.save(produtoNoBanco);
+    }
+
+    public void deletarProduto(Long id) {
+        buscarPorId(id);
+        produtoRepository.deleteById(id);
     }
 }

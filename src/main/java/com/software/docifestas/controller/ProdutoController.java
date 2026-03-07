@@ -21,4 +21,19 @@ public class ProdutoController {
     public List<Produto> listarTudo() {
         return produtoService.listarTodos();
     }
+
+    @GetMapping("/{id}")
+    public Produto buscarPorId(@PathVariable Long id) {
+        return produtoService.buscarPorId(id);
+    }
+
+    @PutMapping("/{id}")
+    public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto produto) {
+        return produtoService.atualizarProduto(id, produto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletarProduto(@PathVariable Long id) {
+        produtoService.deletarProduto(id);
+    }
 }
