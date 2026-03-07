@@ -1,5 +1,6 @@
 package com.software.docifestas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,8 @@ public class Usuario {
     // Atributos By Dege
         private String nome;
         private String email;
+        @JsonIgnore
         private String senha;
-        private String typeLogin;
         private boolean isAdmin;
 
     // Construtores
@@ -28,17 +29,15 @@ public class Usuario {
         public String getNome() { return nome; }
         public String getEmail() { return email; }
         public String getSenha() { return senha; }
-        public String getTypeLogin() {return typeLogin; }
         public boolean getIsAdmin() { return isAdmin; }
     // -------------
         public void setNome(String nome) { this.nome = nome; }
         public void setEmail(String email) { this.email = email; }
         public void setSenha(String senha) { this.senha = senha;}
-        public void setTypeLogin(String typeLogin) { this.typeLogin = typeLogin; }
         public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
     // MTS
         public String toString() {
-            return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +getTypeLogin();
+            return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +getIsAdmin();
     }
 }

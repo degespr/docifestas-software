@@ -27,6 +27,7 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
+    // Code Rule - Extras
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();
     }

@@ -5,6 +5,9 @@ import com.software.docifestas.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
     @Autowired
@@ -24,18 +27,35 @@ public class UsuarioService {
 
         }
 
-        //Validation Senha
+        // Validation Senha
         if (usuario.getSenha() == null || usuario.getSenha().length() < 7) {
             throw new IllegalArgumentException("Tipo de senha inválida!");
 
         }
 
-        // Validação Type Login
-        if  (usuario.getTypeLogin() == null ||
-                !usuario.getTypeLogin().equalsIgnoreCase("ADMIN") && !usuario.getTypeLogin().equalsIgnoreCase("USER")) {
-            throw new IllegalArgumentException("Tipo de login inválido!");
+        // Code Rule - Account
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+            if (usuarioExistente.isPresent()) {
+                throw new RuntimeException("Usuário já cadastrado! Faça login ou crie outra conta.");
 
-        }
+            }
+
+        // Code Rule - Type Login
+        usuario.setIsAdmin(false);
         return usuarioRepository.save(usuario);
+    }
+
+    // Code Rule - Extras
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public Usuario buscarPorId(Long id) {
+
+    Optional<Usuario> buscaCompleta = usuarioRepository.findById(id);
+        if (buscaCompleta.isPresent()) {
+            return buscaCompleta.get();
+
+        }   throw new IllegalArgumentException("Usuário não encontrado!");
     }
 }

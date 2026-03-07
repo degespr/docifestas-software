@@ -12,13 +12,13 @@ import java.util.List;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoService myBrain;
+    private ProdutoService produtoService;
 
     @PostMapping
-    public Produto criarProduto(@RequestBody Produto produto) {return myBrain.salvar(produto);}
+    public Produto criarProduto(@RequestBody Produto produto) {return produtoService.salvar(produto);}
 
     @GetMapping
     public List<Produto> listarTudo() {
-        return myBrain.listarTodos();
+        return produtoService.listarTodos();
     }
 }
