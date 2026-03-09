@@ -4,10 +4,9 @@ import com.software.docifestas.dto.VendaRequest;
 import com.software.docifestas.model.Venda;
 import com.software.docifestas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
@@ -19,4 +18,9 @@ public class VendaController {
     @PostMapping
     public Venda criarVenda(@RequestBody VendaRequest request) {return vendaService.registrarVenda(request.getProdutoId(), request.getQuantidade());}
 
+    @GetMapping
+    public List<Venda> listarVendas() {return vendaService.listarVendas();}
+
+    @GetMapping("/{id}")
+    public Venda buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
 }

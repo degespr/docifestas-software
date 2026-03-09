@@ -7,6 +7,9 @@ import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class VendaService {
     @Autowired
@@ -34,5 +37,16 @@ public class VendaService {
         venda.setData(java.time.LocalDateTime.now());
 
         return vendaRepository.save(venda);
+    }
+
+    // Code Rule - Extras
+    public List<Venda> listarVendas() {return vendaRepository.findAll();}
+
+    public Venda buscarVenda(Long id) {
+        Optional<Venda> buscarVendas = vendaRepository.findById(id);
+            if (buscarVendas.isPresent()) {
+                return buscarVendas.get();
+
+            } throw new IllegalArgumentException("Venda não encontrada!");
     }
 }
