@@ -16,11 +16,12 @@ public class VendaController {
     private VendaService vendaService;
 
     @PostMapping
-    public Venda criarVenda(@RequestBody VendaRequest request) {return vendaService.registrarVenda(request.getProdutoId(), request.getQuantidade());}
+    public Venda criarVenda(@RequestBody VendaRequest request) {return vendaService.registrarVenda(request.getUsuarioId(), request.getProdutoId(), request.getQuantidade());}
 
     @GetMapping
     public List<Venda> listarVendas() {return vendaService.listarVendas();}
 
     @GetMapping("/{id}")
     public Venda buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
+
 }
