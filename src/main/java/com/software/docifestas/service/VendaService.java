@@ -62,4 +62,8 @@ public class VendaService {
     public List<Venda> listarVendasDoUsuario(Long usuarioId) {
         return vendaRepository.findByUsuarioId(usuarioId);
     }
+
+    public List<Venda> vendaPorProduto(Long produtoId) {
+        return vendaRepository.findByProdutoId(produtoId);
+    }
 }

@@ -24,4 +24,8 @@ public class VendaController {
     @GetMapping("/{id}")
     public Venda buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
 
+    @GetMapping("/produto/{id}")
+    public List<Venda> vendaPorProduto(@PathVariable Long id) {
+        return vendaService.vendaPorProduto(id);
+    }
 }
