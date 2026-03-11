@@ -3,6 +3,7 @@ package com.software.docifestas.repository;
 import com.software.docifestas.model.Produto;
 import com.software.docifestas.model.Venda;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,4 +12,12 @@ import java.util.List;
 public interface VendaRepository extends JpaRepository<Venda, Long> {
     List<Venda> findByUsuarioId(Long usuarioId);
     List<Venda> findByProdutoId(Long produtoId);
-}
+
+        @Query("""
+           SELECT v.produto, SUM(v.quantidade)
+           FROM Venda v
+           GROUP BY v.produto
+           ORDER BY SUM(v.quantidade) DESC
+           """)
+        List<Object[]> produtosMaisVendidos();
+    }

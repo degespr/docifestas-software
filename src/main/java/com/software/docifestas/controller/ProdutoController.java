@@ -1,6 +1,7 @@
 package com.software.docifestas.controller;
 
 import com.software.docifestas.model.Produto;
+import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,15 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable Long id) {
         produtoService.deletarProduto(id);
+    }
+
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+
+    }
+
+    @GetMapping("/mais-vendidos")
+    public List<Object[]> rankingProdutos() {
+        return produtoService.produtosMaisVendidos();
     }
 }

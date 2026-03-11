@@ -1,6 +1,7 @@
 package com.software.docifestas.service;
 
 import com.software.docifestas.repository.ProdutoRepository;
+import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.software.docifestas.model.Produto;
@@ -53,5 +54,12 @@ public class ProdutoService {
     public void deletarProduto(Long id) {
         buscarPorId(id);
         produtoRepository.deleteById(id);
+    }
+
+    @Autowired
+    private VendaRepository vendaRepository;
+
+    public List<Object[]> produtosMaisVendidos() {
+        return vendaRepository.produtosMaisVendidos();
     }
 }
