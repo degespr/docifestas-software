@@ -1,65 +1,92 @@
 package com.software.docifestas.service;
 
+import com.software.docifestas.dto.produto.ProdutoRequestDTO;
+import com.software.docifestas.dto.produto.ProdutoResponseDTO;
+import com.software.docifestas.model.Produto;
 import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.software.docifestas.model.Produto;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
+
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public Produto salvar(Produto produto) {
-        Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(produto.getProduto());
+    @Autowired
+    private VendaRepository vendaRepository;
+
+    public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
+        Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(request.getProduto());
 
         if (produtoNoBanco.isPresent()) {
             throw new RuntimeException("Já existe um produto com este nome!");
         }
 
-        return produtoRepository.save(produto);
+        Produto produto = new Produto();
+        produto.setProduto(request.getProduto());
+        produto.setCategoria(request.getCategoria());
+        produto.setPreco(request.getPreco());
+        produto.setEstoque(request.getEstoque());
+
+        Produto salvo = produtoRepository.save(produto);
+
+        return toResponseDTO(salvo);
     }
 
-    // Code Rule - Extras
-    public List<Produto> listarTodos() {
-        return produtoRepository.findAll();
+    public List<ProdutoResponseDTO> listarTodos() {
+        List<Produto> produtos = produtoRepository.findAll();
+
+        return produtos.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    // MTS
-    public Produto buscarPorId(Long id) {
+    public ProdutoResponseDTO buscarPorId(Long id) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-        Optional<Produto> buscarProduto = produtoRepository.findById(id);
-            if (buscarProduto.isPresent()) {
-                return buscarProduto.get();
+        return toResponseDTO(produto);
+    }
 
-            } throw new IllegalArgumentException("Produto não encontrado!");
-        }
+    public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO request) {
+        Produto produtoNoBanco = produtoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-    public Produto atualizarProduto(Long id, Produto produto) {
-        Produto produtoNoBanco = buscarPorId(id);
+        produtoNoBanco.setProduto(request.getProduto());
+        produtoNoBanco.setCategoria(request.getCategoria());
+        produtoNoBanco.setPreco(request.getPreco());
+        produtoNoBanco.setEstoque(request.getEstoque());
 
-        produtoNoBanco.setProduto(produto.getProduto());
-        produtoNoBanco.setCategoria(produto.getCategoria());
-        produtoNoBanco.setPreco(produto.getPreco());
-        produtoNoBanco.setEstoque(produto.getEstoque());
+        Produto atualizado = produtoRepository.save(produtoNoBanco);
 
-        return produtoRepository.save(produtoNoBanco);
+        return toResponseDTO(atualizado);
     }
 
     public void deletarProduto(Long id) {
-        buscarPorId(id);
-        produtoRepository.deleteById(id);
-    }
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-    @Autowired
-    private VendaRepository vendaRepository;
+        produtoRepository.delete(produto);
+    }
 
     public List<Object[]> produtosMaisVendidos() {
         return vendaRepository.produtosMaisVendidos();
+    }
+
+    private ProdutoResponseDTO toResponseDTO(Produto produto) {
+        ProdutoResponseDTO response = new ProdutoResponseDTO();
+        response.setId(produto.getId());
+        response.setProduto(produto.getProduto());
+        response.setCategoria(produto.getCategoria());
+        response.setPreco(produto.getPreco());
+        response.setEstoque(produto.getEstoque());
+
+        return response;
     }
 }

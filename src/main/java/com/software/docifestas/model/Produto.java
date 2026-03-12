@@ -24,7 +24,7 @@ public class Produto {
     }
 
     // G&S
-
+    public Long getId() {return id;}
     public String getProduto() {return produto;}
     public String getCategoria() {return categoria;}
     public int getEstoque() {return estoque;}
@@ -32,6 +32,7 @@ public class Produto {
 
     // --------------------------------------
 
+    public void setId(Long id) {this.id = id;}
     public void setProduto(String produto) {this.produto = produto;}
     public void setCategoria(String categoria) {this.categoria = categoria;}
     public void setEstoque(int estoque) {

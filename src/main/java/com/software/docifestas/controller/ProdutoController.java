@@ -1,8 +1,9 @@
 package com.software.docifestas.controller;
 
+import com.software.docifestas.dto.produto.ProdutoRequestDTO;
 import com.software.docifestas.model.Produto;
-import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.service.ProdutoService;
+import com.software.docifestas.dto.produto.ProdutoResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,21 +17,21 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping
-    public Produto criarProduto(@RequestBody Produto produto) {return produtoService.salvar(produto);}
+    public ProdutoResponseDTO criarProduto(@RequestBody ProdutoRequestDTO request) {return produtoService.salvar(request);}
 
     @GetMapping
-    public List<Produto> listarTudo() {
+    public List<ProdutoResponseDTO> listarTudo() {
         return produtoService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Long id) {
+    public ProdutoResponseDTO buscarPorId(@PathVariable Long id) {
         return produtoService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto produto) {
-        return produtoService.atualizarProduto(id, produto);
+    public ProdutoResponseDTO atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequestDTO request) {
+        return produtoService.atualizarProduto(id, request);
     }
 
     @DeleteMapping("/{id}")

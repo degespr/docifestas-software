@@ -1,6 +1,6 @@
-package com.software.docifestas.dto;
+package com.software.docifestas.dto.venda;
 
-public class VendaRequest {
+public class VendaRequestDTO {
 
     // Atributos By Dege
     private Long produtoId;

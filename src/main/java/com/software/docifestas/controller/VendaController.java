@@ -1,6 +1,6 @@
 package com.software.docifestas.controller;
 
-import com.software.docifestas.dto.VendaRequest;
+import com.software.docifestas.dto.venda.VendaRequestDTO;
 import com.software.docifestas.model.Venda;
 import com.software.docifestas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class VendaController {
     private VendaService vendaService;
 
     @PostMapping
-    public Venda criarVenda(@RequestBody VendaRequest request) {return vendaService.registrarVenda(request.getUsuarioId(), request.getProdutoId(), request.getQuantidade());}
+    public Venda criarVenda(@RequestBody VendaRequestDTO request) {return vendaService.registrarVenda(request.getUsuarioId(), request.getProdutoId(), request.getQuantidade());}
 
     @GetMapping
     public List<Venda> listarVendas() {return vendaService.listarVendas();}
