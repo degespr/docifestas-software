@@ -2,12 +2,15 @@ package com.software.docifestas.service;
 
 import com.software.docifestas.dto.produto.ProdutoRequestDTO;
 import com.software.docifestas.dto.produto.ProdutoResponseDTO;
+import com.software.docifestas.exception.BusinessException;
+import com.software.docifestas.exception.ResourceNotFoundException;
 import com.software.docifestas.model.Produto;
 import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +28,11 @@ public class ProdutoService {
         Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(request.getProduto());
 
         if (produtoNoBanco.isPresent()) {
-            throw new RuntimeException("Já existe um produto com este nome!");
+            throw new BusinessException("Já existe um produto com este nome!");
+        }
+
+        if (request.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("Preço deve ser maior que zero");
         }
 
         Produto produto = new Produto();
@@ -49,14 +56,18 @@ public class ProdutoService {
 
     public ProdutoResponseDTO buscarPorId(Long id) {
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não existe"));
 
         return toResponseDTO(produto);
     }
 
     public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO request) {
         Produto produtoNoBanco = produtoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
+
+        if (request.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("Preço deve ser maior que zero");
+        }
 
         produtoNoBanco.setProduto(request.getProduto());
         produtoNoBanco.setCategoria(request.getCategoria());
@@ -70,7 +81,7 @@ public class ProdutoService {
 
     public void deletarProduto(Long id) {
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
         produtoRepository.delete(produto);
     }
