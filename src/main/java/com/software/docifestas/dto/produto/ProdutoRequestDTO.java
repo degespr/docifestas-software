@@ -9,7 +9,7 @@ public class ProdutoRequestDTO {
     private BigDecimal preco;
     private int estoque;
 
-    // G&S
+    // Getter
     public String getProduto() {return produto;}
     public String getCategoria() {return categoria;}
     public BigDecimal getPreco() {return preco;}
@@ -17,6 +17,7 @@ public class ProdutoRequestDTO {
 
     // -----------------------------
 
+    // Setter
     public void setProduto(String produto) {this.produto = produto;}
     public void setCategoria(String categoria) {this.categoria = categoria;}
     public void setEstoque(int estoque) {this.estoque = estoque;}

@@ -19,25 +19,27 @@ public class Usuario {
         private String email;
         @JsonIgnore
         private String senha;
-        private boolean isAdmin;
+        private boolean admin;
 
     // Construtores
         public Usuario() {
         }
 
     // G&S
+        public Long getId() {return id;}
         public String getNome() { return nome; }
         public String getEmail() { return email; }
         public String getSenha() { return senha; }
-        public boolean getIsAdmin() { return isAdmin; }
+        public boolean isAdmin() { return admin; }
     // -------------
+        public void setId(Long id) {this.id = id;}
         public void setNome(String nome) { this.nome = nome; }
         public void setEmail(String email) { this.email = email; }
         public void setSenha(String senha) { this.senha = senha;}
-        public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
+        public void setAdmin(boolean admin) { this.admin = admin; }
 
     // MTS
         public String toString() {
-            return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +getIsAdmin();
+            return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +isAdmin();
     }
 }

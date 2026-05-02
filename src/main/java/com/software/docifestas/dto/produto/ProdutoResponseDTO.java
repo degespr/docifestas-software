@@ -10,7 +10,7 @@ public class ProdutoResponseDTO {
     private BigDecimal preco;
     private int estoque;
 
-    // G&S
+    // Getter
     public Long getId() {return id;}
     public String getProduto() {return produto;}
     public String getCategoria() {return categoria;}
@@ -19,6 +19,7 @@ public class ProdutoResponseDTO {
 
     // -----------------------------
 
+    // Setter
     public void setId(Long id) {this.id = id;}
     public void setProduto(String produto) {this.produto = produto;}
     public void setCategoria(String categoria) {this.categoria = categoria;}

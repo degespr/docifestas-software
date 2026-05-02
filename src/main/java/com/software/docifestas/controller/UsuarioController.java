@@ -1,5 +1,6 @@
 package com.software.docifestas.controller;
 
+import com.software.docifestas.dto.usuario.UsuarioResponseDTO;
 import com.software.docifestas.model.Venda;
 import com.software.docifestas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,18 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<Usuario> listarTudo() {
+    public List<UsuarioResponseDTO> listarTudo() {
         return usuarioService.listarUsuarios();
 
     }
 
     @GetMapping("/{id}")
-    public Usuario buscarPorId(@PathVariable Long id) {
+    public UsuarioResponseDTO buscarPorId(@PathVariable Long id) {
         return usuarioService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Usuario atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         return usuarioService.atualizarUsuario(id, usuario);
     }
 
