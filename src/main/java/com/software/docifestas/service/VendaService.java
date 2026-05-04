@@ -1,5 +1,11 @@
 package com.software.docifestas.service;
 
+import com.software.docifestas.dto.ItemVenda.ItemVendaRequestDTO;
+import com.software.docifestas.dto.venda.VendaRequestDTO;
+import com.software.docifestas.dto.venda.VendaResponseDTO;
+import com.software.docifestas.exception.BusinessException;
+import com.software.docifestas.exception.ResourceNotFoundException;
+import com.software.docifestas.model.ItemVenda;
 import com.software.docifestas.model.Produto;
 import com.software.docifestas.model.Usuario;
 import com.software.docifestas.model.Venda;
@@ -23,29 +29,50 @@ public class VendaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Venda registrarVenda(Long usuarioId, Long produtoId, int quantidade) {
-
-        Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
-
-        if (produto.getEstoque() < quantidade) {
-            throw new IllegalArgumentException("Estoque insuficiente");
-        }
-
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                        .orElseThrow(() -> new IllegalArgumentException("Usuario não encontrado."));
-
-        produto.setEstoque(produto.getEstoque() - quantidade);
-        produtoRepository.save(produto);
+    public VendaResponseDTO registrarVenda(VendaRequestDTO request) {
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
         Venda venda = new Venda();
-        venda.setProduto(produto);
-        venda.setQuantidade(quantidade);
-        venda.setValorTotal(produto.getPreco().multiply(java.math.BigDecimal.valueOf(quantidade)));
-        venda.setData(java.time.LocalDateTime.now());
         venda.setUsuario(usuario);
+        venda.setData(java.time.LocalDateTime.now());
+        java.math.BigDecimal valorTotal = java.math.BigDecimal.ZERO;
 
-        return vendaRepository.save(venda);
+        // Code Run
+        for (ItemVendaRequestDTO item : request.getItens()) {
+            Produto produto = produtoRepository.findById(item.getProdutoId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
+
+            if (item.getQuantidade() <= 0) {
+                throw new BusinessException("Quantidade inválida!");
+            }
+
+            if (produto.getEstoque() < item.getQuantidade()) {
+                throw new BusinessException("Estoque insuficiente!");
+            }
+
+            java.math.BigDecimal precoUnitario = produto.getPreco();
+            java.math.BigDecimal subtotal = precoUnitario.multiply(
+                    java.math.BigDecimal.valueOf(item.getQuantidade())
+            );
+
+            ItemVenda itemVenda = new ItemVenda();
+            itemVenda.setVenda(venda);
+            itemVenda.setProduto(produto);
+            itemVenda.setQuantidade(item.getQuantidade());
+            itemVenda.setPrecoUnitario(precoUnitario);
+            itemVenda.setSubtotal(subtotal);
+
+            venda.getItens().add(itemVenda);
+
+            produto.setEstoque(produto.getEstoque() - item.getQuantidade());
+            produtoRepository.save(produto);
+            valorTotal = valorTotal.add(subtotal);
+        }
+
+        venda.setValorTotal(valorTotal);
+        Venda vendaSalva = vendaRepository.save(venda);
+        return toDTO(vendaSalva);
     }
 
     // Code Rule - Extras
@@ -56,7 +83,7 @@ public class VendaService {
             if (buscarVendas.isPresent()) {
                 return buscarVendas.get();
 
-            } throw new IllegalArgumentException("Venda não encontrada!");
+            } throw new ResourceNotFoundException("Venda não encontrada!");
     }
 
     public List<Venda> listarVendasDoUsuario(Long usuarioId) {
@@ -65,5 +92,17 @@ public class VendaService {
 
     public List<Venda> vendaPorProduto(Long produtoId) {
         return vendaRepository.findByProdutoId(produtoId);
+    }
+
+    public VendaResponseDTO toDTO(Venda venda) {
+        VendaResponseDTO dto = new VendaResponseDTO();
+
+        dto.setId(venda.getId());
+        dto.setNomeUsuario(venda.getUsuario().getNome());
+        dto.setValorTotal(venda.getValorTotal());
+        dto.setData(venda.getData());
+        dto.setItens(venda.getItens());
+
+        return dto;
     }
 }

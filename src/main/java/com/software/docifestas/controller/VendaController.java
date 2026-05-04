@@ -16,7 +16,7 @@ public class VendaController {
     private VendaService vendaService;
 
     @PostMapping
-    public Venda criarVenda(@RequestBody VendaRequestDTO request) {return vendaService.registrarVenda(request.getUsuarioId(), request.getProdutoId(), request.getQuantidade());}
+    public Venda criarVenda(@RequestBody VendaRequestDTO request) {return vendaService.registrarVenda(request);}
 
     @GetMapping
     public List<Venda> listarVendas() {return vendaService.listarVendas();}
@@ -24,8 +24,9 @@ public class VendaController {
     @GetMapping("/{id}")
     public Venda buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
 
-    @GetMapping("/produto/{id}")
-    public List<Venda> vendaPorProduto(@PathVariable Long id) {
-        return vendaService.vendaPorProduto(id);
-    }
+    // Aguardando necessidade de uso
+    // @GetMapping("/produto/{id}")
+    // public List<Venda> vendaPorProduto(@PathVariable Long id) {
+        // return vendaService.vendaPorProduto(id);
+    // }
 }
