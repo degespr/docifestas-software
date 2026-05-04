@@ -1,11 +1,11 @@
 package com.software.docifestas.controller;
 
+import com.software.docifestas.dto.usuario.UsuarioRequestDTO;
 import com.software.docifestas.dto.usuario.UsuarioResponseDTO;
 import com.software.docifestas.model.Venda;
 import com.software.docifestas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.software.docifestas.model.Usuario;
 import com.software.docifestas.service.UsuarioService;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class UsuarioController {
     private VendaService vendaService;
 
     @PostMapping
-    public Usuario criarCadastro(@RequestBody Usuario usuario) {
-        return usuarioService.salvar(usuario);
+    public UsuarioResponseDTO criarCadastro(@RequestBody UsuarioRequestDTO request) {
+        return usuarioService.salvar(request);
 
     }
 
@@ -38,8 +38,8 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return usuarioService.atualizarUsuario(id, usuario);
+    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO request) {
+        return usuarioService.atualizarUsuario(id, request);
     }
 
     @DeleteMapping("/{id}")

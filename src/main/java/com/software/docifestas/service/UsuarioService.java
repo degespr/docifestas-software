@@ -18,7 +18,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public UsuarioRequestDTO salvar(UsuarioRequestDTO request) {
+    public UsuarioResponseDTO salvar(UsuarioRequestDTO request) {
     // Code Run
         // Validation Nome
         if (request.getNome() == null) {
@@ -40,7 +40,15 @@ public class UsuarioService {
             if (usuarioExistente.isPresent()) {
                 throw new BusinessException("Usuário já cadastrado! Faça login ou crie outra conta.");
             }
+            // CONTINUAR O SALVAR A PARTIR DAQUI - ASS: DEGESPR
+            Usuario usuario = new Usuario();
+            usuario.setNome(request.getNome());
+            usuario.setEmail(request.getEmail());
+            usuario.setSenha(request.getSenha());
+            usuario.setAdmin(false);
 
+            Usuario usuarioSalvo = usuarioRepository.save(usuario);
+            return toDTO(usuarioSalvo);
     }
 
     // Code Rule - Extras
@@ -59,12 +67,12 @@ public class UsuarioService {
         return toDTO(usuario);
     }
 
-    public UsuarioResponseDTO atualizarUsuario(Long id, Usuario usuario) {
+    public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO request) {
         Usuario usuarioExistente = buscarEntidadePorId(id);
 
-        usuarioExistente.setNome(usuario.getNome());
-        usuarioExistente.setEmail(usuario.getEmail());
-        usuarioExistente.setSenha(usuario.getSenha());
+        usuarioExistente.setNome(request.getNome());
+        usuarioExistente.setEmail(request.getEmail());
+        usuarioExistente.setSenha(request.getSenha());
 
         Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
         return toDTO(usuarioAtualizado);

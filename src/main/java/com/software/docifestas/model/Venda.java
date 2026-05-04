@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Venda {
@@ -14,37 +16,36 @@ public class Venda {
 
     // Atributos By Dege
     @ManyToOne
-    Usuario usuario;
-
-    @ManyToOne
-    Produto produto;
-
-    private int quantidade;
+    private Usuario usuario;
     private BigDecimal valorTotal;
     private LocalDateTime data;
+
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private List<ItemVenda> itens = new ArrayList<>();
 
     // Construtor
     public Venda() {
     }
 
-    // G&S
+    // Getter
+    public Long getId() {return id;}
     public Usuario getUsuario() {return usuario;}
-    public Produto getProduto() {return produto;}
-    public int getQuantidade() {return quantidade;}
+    public List<ItemVenda> getItens() {return itens;}
     public BigDecimal getValorTotal() {return valorTotal;}
     public LocalDateTime getData() {return data;}
 
     // --------------------------------------
 
+    // Setter
+    public void setId(Long id) {this.id = id;}
     public void setUsuario(Usuario usuario) {this.usuario = usuario;}
-    public void setProduto(Produto produto) {this.produto = produto;}
-    public void setQuantidade(int quantidade) {this.quantidade = quantidade;}
+    public void setItens(List<ItemVenda> itens) {this.itens = itens;}
     public void setValorTotal(BigDecimal valorTotal) {this.valorTotal = valorTotal;}
     public void setData(LocalDateTime data) {this.data = data;}
 
     // MTS
     @Override
     public String toString() {
-        return produto + " | Quantidade: " + quantidade + " | Valor: " + valorTotal + " | " + data;
+        return " | Valor: " + valorTotal + " | " + data;
     }
 }
