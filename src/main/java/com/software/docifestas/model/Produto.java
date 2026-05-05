@@ -14,7 +14,7 @@ public class Produto {
     private Long id;
 
     // Atributos By Dege
-    private String produto;
+    private String nomeProduto;
     private String categoria;
     private BigDecimal preco;
     private int estoque;
@@ -25,7 +25,7 @@ public class Produto {
 
     // G&S
     public Long getId() {return id;}
-    public String getProduto() {return produto;}
+    public String getNomeProduto() {return nomeProduto;}
     public String getCategoria() {return categoria;}
     public int getEstoque() {return estoque;}
     public BigDecimal getPreco() {return preco;}
@@ -33,7 +33,7 @@ public class Produto {
     // --------------------------------------
 
     public void setId(Long id) {this.id = id;}
-    public void setProduto(String produto) {this.produto = produto;}
+    public void setNomeProduto(String nomeProduto) {this.nomeProduto = nomeProduto;}
     public void setCategoria(String categoria) {this.categoria = categoria;}
     public void setEstoque(int estoque) {
         if (estoque < 0) {
@@ -52,7 +52,7 @@ public class Produto {
     // MTS
     @Override
     public String toString() {
-        return produto + " |  Categoria: " + categoria + " | Estoque: " + estoque + " |  Custa R$ " +preco;
+        return nomeProduto + " |  Categoria: " + categoria + " | Estoque: " + estoque + " |  Custa R$ " +preco;
 
     }
 }

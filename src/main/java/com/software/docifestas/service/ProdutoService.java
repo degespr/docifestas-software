@@ -25,7 +25,7 @@ public class ProdutoService {
     private VendaRepository vendaRepository;
 
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
-        Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(request.getProduto());
+        Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(request.getNomeProduto());
 
         if (produtoNoBanco.isPresent()) {
             throw new BusinessException("Já existe um produto com este nome!");
@@ -36,7 +36,7 @@ public class ProdutoService {
         }
 
         Produto produto = new Produto();
-        produto.setProduto(request.getProduto());
+        produto.setNomeProduto(request.getNomeProduto());
         produto.setCategoria(request.getCategoria());
         produto.setPreco(request.getPreco());
         produto.setEstoque(request.getEstoque());
@@ -69,7 +69,7 @@ public class ProdutoService {
             throw new BusinessException("Preço deve ser maior que zero");
         }
 
-        produtoNoBanco.setProduto(request.getProduto());
+        produtoNoBanco.setNomeProduto(request.getNomeProduto());
         produtoNoBanco.setCategoria(request.getCategoria());
         produtoNoBanco.setPreco(request.getPreco());
         produtoNoBanco.setEstoque(request.getEstoque());
@@ -93,7 +93,7 @@ public class ProdutoService {
     private ProdutoResponseDTO toResponseDTO(Produto produto) {
         ProdutoResponseDTO response = new ProdutoResponseDTO();
         response.setId(produto.getId());
-        response.setProduto(produto.getProduto());
+        response.setNomeProduto(produto.getNomeProduto());
         response.setCategoria(produto.getCategoria());
         response.setPreco(produto.getPreco());
         response.setEstoque(produto.getEstoque());

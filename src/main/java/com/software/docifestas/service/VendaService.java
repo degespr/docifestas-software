@@ -1,6 +1,7 @@
 package com.software.docifestas.service;
 
 import com.software.docifestas.dto.ItemVenda.ItemVendaRequestDTO;
+import com.software.docifestas.dto.ItemVenda.ItemVendaResponseDTO;
 import com.software.docifestas.dto.venda.VendaRequestDTO;
 import com.software.docifestas.dto.venda.VendaResponseDTO;
 import com.software.docifestas.exception.BusinessException;
@@ -15,6 +16,7 @@ import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,33 +78,42 @@ public class VendaService {
     }
 
     // Code Rule - Extras
-    public List<Venda> listarVendas() {return vendaRepository.findAll();}
+    public List<VendaResponseDTO> listarVendas() {
+        List<Venda> vendas = vendaRepository.findAll();
+        List<VendaResponseDTO> listaDTO = new ArrayList<>();
 
-    public Venda buscarVenda(Long id) {
-        Optional<Venda> buscarVendas = vendaRepository.findById(id);
-            if (buscarVendas.isPresent()) {
-                return buscarVendas.get();
-
-            } throw new ResourceNotFoundException("Venda não encontrada!");
+        for (Venda venda : vendas) {
+            listaDTO.add(toDTO(venda));
+        } return listaDTO;
     }
 
-    public List<Venda> listarVendasDoUsuario(Long usuarioId) {
-        return vendaRepository.findByUsuarioId(usuarioId);
+    public VendaResponseDTO buscarVenda(Long id) {
+        Venda venda = vendaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada!"));
+
+        return toDTO(venda);
     }
 
-    public List<Venda> vendaPorProduto(Long produtoId) {
-        return vendaRepository.findByProdutoId(produtoId);
-    }
-
-    public VendaResponseDTO toDTO(Venda venda) {
+    private VendaResponseDTO toDTO(Venda venda) {
         VendaResponseDTO dto = new VendaResponseDTO();
 
         dto.setId(venda.getId());
         dto.setNomeUsuario(venda.getUsuario().getNome());
         dto.setValorTotal(venda.getValorTotal());
         dto.setData(venda.getData());
-        dto.setItens(venda.getItens());
 
+        List<ItemVendaResponseDTO> itensDTO = new ArrayList<>();
+        for (ItemVenda item : venda.getItens()) {
+            ItemVendaResponseDTO itemDTO = new ItemVendaResponseDTO();
+            itemDTO.setNomeProduto(item.getProduto().getNomeProduto());
+            itemDTO.setQuantidade(item.getQuantidade());
+            itemDTO.setSubtotal(item.getSubtotal());
+
+            itensDTO.add(itemDTO);
+
+        }
+
+        dto.setItens(itensDTO);
         return dto;
     }
 }
