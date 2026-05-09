@@ -43,9 +43,4 @@ public class ProdutoController {
         this.produtoService = produtoService;
 
     }
-
-    @GetMapping("/mais-vendidos")
-    public List<Object[]> rankingProdutos() {
-        return produtoService.produtosMaisVendidos();
-    }
 }

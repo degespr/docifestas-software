@@ -47,8 +47,8 @@ public class UsuarioController {
         usuarioService.deletarUsuario(id);
     }
 
-    @GetMapping("/{id}/vendas")
-    public List<Venda> listarVendasDoUsuario(@PathVariable Long id) {
-        return vendaService.listarVendasDoUsuario(id);
-    }
+    // @GetMapping("/{id}/vendas")
+    // public List<Venda> listarVendasDoUsuario(@PathVariable Long id) {
+        // return vendaService.listarVendasDoUsuario(id);
+    // }
 }

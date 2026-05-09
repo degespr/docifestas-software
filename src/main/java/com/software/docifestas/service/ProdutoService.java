@@ -25,7 +25,7 @@ public class ProdutoService {
     private VendaRepository vendaRepository;
 
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
-        Optional<Produto> produtoNoBanco = produtoRepository.findByProduto(request.getNomeProduto());
+        Optional<Produto> produtoNoBanco = produtoRepository.findByNomeProduto(request.getNomeProduto());
 
         if (produtoNoBanco.isPresent()) {
             throw new BusinessException("Já existe um produto com este nome!");
@@ -84,10 +84,6 @@ public class ProdutoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
         produtoRepository.delete(produto);
-    }
-
-    public List<Object[]> produtosMaisVendidos() {
-        return vendaRepository.produtosMaisVendidos();
     }
 
     private ProdutoResponseDTO toResponseDTO(Produto produto) {
