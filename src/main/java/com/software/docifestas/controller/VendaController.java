@@ -24,10 +24,4 @@ public class VendaController {
 
     @GetMapping("/{id}")
     public VendaResponseDTO buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
-
-    // Aguardando necessidade de uso
-    // @GetMapping("/produto/{id}")
-    // public List<Venda> vendaPorProduto(@PathVariable Long id) {
-        // return vendaService.vendaPorProduto(id);
-    // }
 }

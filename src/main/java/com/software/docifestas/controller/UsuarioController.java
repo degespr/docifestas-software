@@ -2,7 +2,6 @@ package com.software.docifestas.controller;
 
 import com.software.docifestas.dto.usuario.UsuarioRequestDTO;
 import com.software.docifestas.dto.usuario.UsuarioResponseDTO;
-import com.software.docifestas.model.Venda;
 import com.software.docifestas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +45,4 @@ public class UsuarioController {
     public void deletarUsuario(@PathVariable Long id) {
         usuarioService.deletarUsuario(id);
     }
-
-    // @GetMapping("/{id}/vendas")
-    // public List<Venda> listarVendasDoUsuario(@PathVariable Long id) {
-        // return vendaService.listarVendasDoUsuario(id);
-    // }
 }
