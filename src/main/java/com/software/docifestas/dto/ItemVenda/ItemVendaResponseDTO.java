@@ -1,11 +1,18 @@
 package com.software.docifestas.dto.ItemVenda;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 
 public class ItemVendaResponseDTO {
     // Atributos By Dege
+    @Schema(description = "Nome do produto", example = "Brigadeiro")
     private String nomeProduto;
+
+    @Schema(description = "Quantidade do produto em estoque", example = "20")
     private int quantidade;
+
+    @Schema(description = "Preço do produto", example = "3.50")
     private BigDecimal subtotal;
 
     // Getter

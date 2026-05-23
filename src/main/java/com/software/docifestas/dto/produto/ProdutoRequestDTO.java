@@ -1,13 +1,22 @@
 package com.software.docifestas.dto.produto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 
 public class ProdutoRequestDTO {
     // Atributos By Dege
+    @Schema(description = "Nome do produto", example = "Brigadeiro")
     private String nomeProduto;
+
+    @Schema(description = "Categoria do produto", example = "Doce")
     private String categoria;
+
+    @Schema(description = "Preço do produto", example = "3.50")
     private BigDecimal preco;
-    private int estoque;
+
+    @Schema(description = "Quantidade disponível em estoque", example = "100")
+    private Integer estoque;
 
     // Getter
     public String getNomeProduto() {return nomeProduto;}

@@ -1,11 +1,18 @@
 package com.software.docifestas.dto.usuario;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UsuarioResponseDTO {
 
     // Atributos
+    @Schema(description = "ID do usuário", example = "1")
     private Long id;
+
+    @Schema(description = "Nome do usuário", example = "Diego Oliveira")
     private String nome;
+
+    @Schema(description = "Email do usuário", example = "dfernandesoliveira@outlook.com.br")
     private String email;
+
     private boolean admin;
 
     // Getter
