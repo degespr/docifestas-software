@@ -3,7 +3,10 @@ package com.software.docifestas.controller;
 import com.software.docifestas.dto.produto.ProdutoRequestDTO;
 import com.software.docifestas.service.ProdutoService;
 import com.software.docifestas.dto.produto.ProdutoResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -13,9 +16,18 @@ import java.util.List;
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-    @PostMapping
+    // Codes For Aplications - POST / NÃO MEXER
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Produto criado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de validação."),
+    })
+
     @Operation(summary = "Cria os produtos no sistema.")
-    public ProdutoResponseDTO criarProduto(@RequestBody ProdutoRequestDTO request) {return produtoService.salvar(request);}
+    @PostMapping
+    public ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody ProdutoRequestDTO request) {
+        ProdutoResponseDTO produto = produtoService.salvar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(produto);
+    }
 
     @Operation(summary = "Lista os produtos disponíveis no estoque.")
     @GetMapping
@@ -31,14 +43,21 @@ public class ProdutoController {
 
     @Operation(summary = "Atualizar dados de um produto existente.")
     @PutMapping("/{id}")
-    public ProdutoResponseDTO atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequestDTO request) {
-        return produtoService.atualizarProduto(id, request);
+    public ResponseEntity <ProdutoResponseDTO> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequestDTO request) {
+        ProdutoResponseDTO produto = produtoService.atualizarProduto(id, request);
+        return ResponseEntity.ok(produto);
     }
 
+    // Codes For Aplications - DELETE / NÃO MEXER
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Produto removido com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Produto não encontrado."),
+})
     @Operation(summary = "Remove produtos do sistema.")
     @DeleteMapping("/{id}")
-    public void deletarProduto(@PathVariable Long id) {
+    public ResponseEntity <Void> deletarProduto(@PathVariable Long id) {
         produtoService.deletarProduto(id);
+        return ResponseEntity.noContent().build();
     }
 
     private final ProdutoService produtoService;
