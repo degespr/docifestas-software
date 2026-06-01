@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class VendaResponseDTO {
+
     // Atributos By Dege
     @Schema(description = "ID do usuário", example = "1")
     private Long id;

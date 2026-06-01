@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 public class ItemVendaResponseDTO {
+
     // Atributos By Dege
     @Schema(description = "Nome do produto", example = "Brigadeiro")
     private String nomeProduto;

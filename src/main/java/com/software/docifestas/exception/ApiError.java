@@ -10,6 +10,8 @@ public class ApiError {
     public String getMessage() {return message;}
     public int getStatus() {return status;}
 
+    // -----------------------------
+
     // Setter
     public void setMessage(String message) {this.message = message;}
     public void setStatus(int status) {this.status = status;}

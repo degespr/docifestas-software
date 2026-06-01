@@ -18,15 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class ProdutoService {
 
+    // Connection
     @Autowired
     private ProdutoRepository produtoRepository;
 
     @Autowired
     private VendaRepository vendaRepository;
 
+    // Functions of System
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
         Optional<Produto> produtoNoBanco = produtoRepository.findByNomeProduto(request.getNomeProduto());
 
+        // Code Run
         if (produtoNoBanco.isPresent()) {
             throw new BusinessException("Já existe um produto com este nome!");
         }
@@ -49,6 +52,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> listarTodos() {
         List<Produto> produtos = produtoRepository.findAll();
 
+        // Code Run
         return produtos.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
@@ -58,6 +62,7 @@ public class ProdutoService {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não existe"));
 
+        // Code Run
         return toResponseDTO(produto);
     }
 
@@ -65,6 +70,7 @@ public class ProdutoService {
         Produto produtoNoBanco = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
+        // Code Run
         if (request.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BusinessException("Preço deve ser maior que zero");
         }
@@ -83,10 +89,13 @@ public class ProdutoService {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
+        // Code Run
         produtoRepository.delete(produto);
     }
 
     private ProdutoResponseDTO toResponseDTO(Produto produto) {
+
+        // Code Run
         ProdutoResponseDTO response = new ProdutoResponseDTO();
         response.setId(produto.getId());
         response.setNomeProduto(produto.getNomeProduto());

@@ -15,32 +15,32 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
+   // Atributos By Dege
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     public UsuarioResponseDTO salvar(UsuarioRequestDTO request) {
     // Code Run
-        // Validation Nome
+        // Validations
         if (request.getNome() == null) {
             throw new BusinessException("Nome inválido! Insira um nome válido.");
         }
 
-        // Validation Email
         if (request.getEmail() == null || !request.getEmail().contains("@")) {
             throw new BusinessException("Email inválido!");
         }
 
-        // Validation Senha
         if (request.getSenha() == null || request.getSenha().length() < 7) {
             throw new BusinessException("Tipo de senha inválida!");
         }
 
-        // Code Rule - Account
+        // Code Rule
         Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(request.getEmail());
             if (usuarioExistente.isPresent()) {
                 throw new BusinessException("Usuário já cadastrado! Faça login ou crie outra conta.");
             }
-            // CONTINUAR O SALVAR A PARTIR DAQUI - ASS: DEGESPR
+
             Usuario usuario = new Usuario();
             usuario.setNome(request.getNome());
             usuario.setEmail(request.getEmail());
@@ -61,7 +61,7 @@ public class UsuarioService {
         return listaDto;
     }
 
-    // MTS
+    // Method's
     public UsuarioResponseDTO buscarPorId(Long id) {
     Usuario usuario = buscarEntidadePorId(id);
         return toDTO(usuario);
@@ -70,6 +70,7 @@ public class UsuarioService {
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO request) {
         Usuario usuarioExistente = buscarEntidadePorId(id);
 
+        // Code Run
         usuarioExistente.setNome(request.getNome());
         usuarioExistente.setEmail(request.getEmail());
         usuarioExistente.setSenha(request.getSenha());
@@ -79,11 +80,13 @@ public class UsuarioService {
     }
 
     public void deletarUsuario(Long id) {
+
+        // Code Run
         buscarEntidadePorId(id);
         usuarioRepository.deleteById(id);
     }
 
-    // Metodo Oculto de Conversão - NÃO MODIFICAR
+    // Method for Conversion - Não Modificar
     private Usuario buscarEntidadePorId(Long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isEmpty()) {
@@ -92,7 +95,7 @@ public class UsuarioService {
         } return usuario.get();
     }
 
-    // Método toDTO - Não mexer
+    // Method To DTO - Não Modificar
     private UsuarioResponseDTO toDTO(Usuario usuario) {
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
 

@@ -3,7 +3,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UsuarioResponseDTO {
 
-    // Atributos
+    // Atributos By Dege
     @Schema(description = "ID do usuário", example = "1")
     private Long id;
 

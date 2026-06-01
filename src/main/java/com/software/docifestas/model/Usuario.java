@@ -13,7 +13,7 @@ public class Usuario {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-// -------------------------------------------
+
     // Atributos By Dege
         private String nome;
         private String email;
@@ -25,20 +25,23 @@ public class Usuario {
         public Usuario() {
         }
 
-    // G&S
+    // Getter
         public Long getId() {return id;}
         public String getNome() { return nome; }
         public String getEmail() { return email; }
         public String getSenha() { return senha; }
         public boolean isAdmin() { return admin; }
-    // -------------
+
+    // --------------------------------------
+
+    // Setter
         public void setId(Long id) {this.id = id;}
         public void setNome(String nome) { this.nome = nome; }
         public void setEmail(String email) { this.email = email; }
         public void setSenha(String senha) { this.senha = senha;}
         public void setAdmin(boolean admin) { this.admin = admin; }
 
-    // MTS
+    // Method To String
         public String toString() {
             return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +isAdmin();
     }

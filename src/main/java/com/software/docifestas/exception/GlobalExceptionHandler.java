@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // HTTP Error 404
     @ExceptionHandler(ResourceNotFoundException.class)
         public ResponseEntity<ApiError> messageError(ResourceNotFoundException ex) {
 
@@ -18,6 +20,7 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
+    // HTTP Error 400
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiError> messageError(BusinessException ex) {
 

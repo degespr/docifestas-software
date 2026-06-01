@@ -22,6 +22,8 @@ import java.util.Optional;
 
 @Service
 public class VendaService {
+
+    // Atributos By Dege
     @Autowired
     private VendaRepository vendaRepository;
 
@@ -31,6 +33,7 @@ public class VendaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Functions of System
     public VendaResponseDTO registrarVenda(VendaRequestDTO request) {
         Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
@@ -87,6 +90,7 @@ public class VendaService {
         } return listaDTO;
     }
 
+    // Method for Conversion - Não Modificar
     public VendaResponseDTO buscarVenda(Long id) {
         Venda venda = vendaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Venda não encontrada!"));
@@ -94,6 +98,7 @@ public class VendaService {
         return toDTO(venda);
     }
 
+    // Method To DTO - Não Modificar
     private VendaResponseDTO toDTO(Venda venda) {
         VendaResponseDTO dto = new VendaResponseDTO();
 

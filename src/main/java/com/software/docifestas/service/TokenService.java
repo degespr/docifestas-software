@@ -13,10 +13,11 @@ public class TokenService {
     // Constant
     private static final String SECRET = "doci-festas-secret";
 
-    // Metodos
+    // Functions of System
     public String gerarToken(Usuario usuario) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
 
+        // Code Run
         return JWT.create()
                 .withSubject(usuario.getEmail())
                 .withClaim("id", usuario.getId())
@@ -26,6 +27,8 @@ public class TokenService {
     }
 
     private Instant gerarExpiracao() {
+
+        // Code Run
         return LocalDateTime.now()
                 .plusHours(1)
                 .toInstant(ZoneOffset.of("-03:00"));
@@ -34,6 +37,7 @@ public class TokenService {
     public String validarToken(String token) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
 
+        // Code Run
         try {
             return JWT.require(algorithm)
                     .withIssuer("doci-festas-api")

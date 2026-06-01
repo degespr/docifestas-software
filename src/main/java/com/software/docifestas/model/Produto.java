@@ -23,7 +23,7 @@ public class Produto {
     public Produto() {
     }
 
-    // G&S
+    // Getter
     public Long getId() {return id;}
     public String getNomeProduto() {return nomeProduto;}
     public String getCategoria() {return categoria;}
@@ -32,16 +32,22 @@ public class Produto {
 
     // --------------------------------------
 
+    // Setter
     public void setId(Long id) {this.id = id;}
     public void setNomeProduto(String nomeProduto) {this.nomeProduto = nomeProduto;}
     public void setCategoria(String categoria) {this.categoria = categoria;}
     public void setEstoque(int estoque) {
+
+        // Code Run
         if (estoque < 0) {
             throw new IllegalArgumentException("Estoque não pode ser negativo!");
 
         } this.estoque = estoque;
     }
+
     public void setPreco(BigDecimal preco) {
+
+        // Code Run
         // Se o resultado da comparação for -1, significa que é menor que zero
         if (preco.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Preço não pode ser negativo!");
@@ -49,7 +55,7 @@ public class Produto {
         this.preco = preco;
     }
 
-    // MTS
+    // Method To String
     @Override
     public String toString() {
         return nomeProduto + " |  Categoria: " + categoria + " | Estoque: " + estoque + " |  Custa R$ " +preco;

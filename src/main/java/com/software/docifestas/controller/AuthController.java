@@ -15,6 +15,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    // Atributos By Dege
     private UsuarioRepository usuarioRepository;
     private TokenService tokenService;
 

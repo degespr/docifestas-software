@@ -22,6 +22,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "400", description = "Erro de validação."),
     })
 
+    // Codes For Aplications - POST / NÃO MEXER
     @Operation(summary = "Cria os produtos no sistema.")
     @PostMapping
     public ResponseEntity<ProdutoResponseDTO> criarProduto(@RequestBody ProdutoRequestDTO request) {
@@ -29,6 +30,7 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(produto);
     }
 
+    // Codes For Aplications - GET
     @Operation(summary = "Lista os produtos disponíveis no estoque.")
     @GetMapping
     public List<ProdutoResponseDTO> listarTudo() {
@@ -41,6 +43,7 @@ public class ProdutoController {
         return produtoService.buscarPorId(id);
     }
 
+    // Codes For Aplications - PUT
     @Operation(summary = "Atualizar dados de um produto existente.")
     @PutMapping("/{id}")
     public ResponseEntity <ProdutoResponseDTO> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequestDTO request) {
@@ -53,6 +56,8 @@ public class ProdutoController {
         @ApiResponse(responseCode = "204", description = "Produto removido com sucesso."),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado."),
 })
+
+    // Codes For Aplications - DELETE
     @Operation(summary = "Remove produtos do sistema.")
     @DeleteMapping("/{id}")
     public ResponseEntity <Void> deletarProduto(@PathVariable Long id) {
@@ -60,8 +65,10 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
+    // Atributo By Dege
     private final ProdutoService produtoService;
 
+    // Construtor
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
 

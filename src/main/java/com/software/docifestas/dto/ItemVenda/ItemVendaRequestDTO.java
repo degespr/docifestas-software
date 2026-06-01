@@ -3,6 +3,7 @@ package com.software.docifestas.dto.ItemVenda;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ItemVendaRequestDTO {
+
     // Atributos By Dege
     @Schema(description = "ID do produto", example = "1")
     private Long produtoId;

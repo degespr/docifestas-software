@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface VendaRepository extends JpaRepository<Venda, Long> {
+
+    // Connection
     List<Venda> findByUsuarioId(Long usuarioId);
 }

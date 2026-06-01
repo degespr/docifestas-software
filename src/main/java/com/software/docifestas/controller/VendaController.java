@@ -14,13 +14,16 @@ import java.util.List;
 @RequestMapping("/vendas")
 public class VendaController {
 
+    // Atributo By Dege
     @Autowired
     private VendaService vendaService;
 
+    // Codes For Aplications - POST
     @Operation(summary = "Cria uma venda no sistema.")
     @PostMapping
     public VendaResponseDTO criarVenda(@RequestBody VendaRequestDTO request) {return vendaService.registrarVenda(request);}
 
+    // Codes For Aplications - GET
     @Operation(summary = "Lista todas as vendas.")
     @GetMapping
     public List<VendaResponseDTO> listarVendas() {return vendaService.listarVendas();}

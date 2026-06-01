@@ -14,12 +14,14 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
+    // Atributos By Dege
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
     private VendaService vendaService;
 
+    // Codes For Aplications - POST
     @Operation(summary = "Cria o cadastro.")
     @PostMapping
     public UsuarioResponseDTO criarCadastro(@RequestBody UsuarioRequestDTO request) {
@@ -27,6 +29,7 @@ public class UsuarioController {
 
     }
 
+    // Codes For Aplications - GET
     @Operation(summary = "Lista todos os usuários.")
     @GetMapping
     public List<UsuarioResponseDTO> listarTudo() {
@@ -40,12 +43,14 @@ public class UsuarioController {
         return usuarioService.buscarPorId(id);
     }
 
+    // Codes For Aplications - PUT
     @Operation(summary = "Atualiza um usuário.")
     @PutMapping("/{id}")
     public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO request) {
         return usuarioService.atualizarUsuario(id, request);
     }
 
+    // Codes For Aplications - DELETE
     @Operation(summary = "Deleta o perfil do usuário.")
     @DeleteMapping("/{id}")
     public void deletarUsuario(@PathVariable Long id) {

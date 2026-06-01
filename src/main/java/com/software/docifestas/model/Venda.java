@@ -43,7 +43,7 @@ public class Venda {
     public void setValorTotal(BigDecimal valorTotal) {this.valorTotal = valorTotal;}
     public void setData(LocalDateTime data) {this.data = data;}
 
-    // MTS
+    // Method To String
     @Override
     public String toString() {
         return " | Valor: " + valorTotal + " | " + data;

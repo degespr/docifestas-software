@@ -14,10 +14,13 @@ public class VendaRequestDTO {
     @Schema(description = "Carrinho de compras do usuário", example = "Brigadeiro, Cookie, Bolo de Cenoura")
     private List<ItemVendaRequestDTO> itens;
 
-    // G&S
+    // Getter
     public Long getUsuarioId() {return usuarioId;}
     public List<ItemVendaRequestDTO> getItens() {return itens;}
 
+    // -------------------------
+
+    // Setter
     public void setUsuarioId(Long usuarioId) {this.usuarioId = usuarioId;}
     public void setItens(List<ItemVendaRequestDTO> itens) {this.itens = itens;}
 }
