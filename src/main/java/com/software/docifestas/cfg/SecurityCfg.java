@@ -41,6 +41,14 @@ public class SecurityCfg {
                         .requestMatchers(HttpMethod.GET, "/vendas").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/vendas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/vendas/**").hasRole("USER")
+
+                        // Validation for Usuarios
+                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").permitAll()
+
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -2,9 +2,11 @@ package com.software.docifestas.controller;
 
 import com.software.docifestas.dto.usuario.UsuarioRequestDTO;
 import com.software.docifestas.dto.usuario.UsuarioResponseDTO;
+import com.software.docifestas.model.Usuario;
 import com.software.docifestas.service.VendaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.software.docifestas.service.UsuarioService;
 
@@ -46,14 +48,14 @@ public class UsuarioController {
     // Codes For Aplications - PUT
     @Operation(summary = "Atualiza um usuário.")
     @PutMapping("/{id}")
-    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO request) {
-        return usuarioService.atualizarUsuario(id, request);
+    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO request, @AuthenticationPrincipal Usuario usuario) {
+        return usuarioService.atualizarUsuario(id, request, usuario);
     }
 
     // Codes For Aplications - DELETE
     @Operation(summary = "Deleta o perfil do usuário.")
     @DeleteMapping("/{id}")
-    public void deletarUsuario(@PathVariable Long id) {
-        usuarioService.deletarUsuario(id);
+    public void deletarUsuario(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) {
+        usuarioService.deletarUsuario(id, usuario);
     }
 }

@@ -67,23 +67,38 @@ public class UsuarioService {
         return toDTO(usuario);
     }
 
-    public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO request) {
-        Usuario usuarioExistente = buscarEntidadePorId(id);
+    public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO request, Usuario usuario) {
 
         // Code Run
-        usuarioExistente.setNome(request.getNome());
-        usuarioExistente.setEmail(request.getEmail());
-        usuarioExistente.setSenha(request.getSenha());
+        if (id.equals(usuario.getId())) {
+            Usuario usuarioExistente = buscarEntidadePorId(id);
 
-        Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
-        return toDTO(usuarioAtualizado);
+            usuarioExistente.setNome(request.getNome());
+            usuarioExistente.setEmail(request.getEmail());
+            usuarioExistente.setSenha(request.getSenha());
+
+            Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
+            return toDTO(usuarioAtualizado);
+        }
+
+        throw new BusinessException("Usuário não possui o mesmo ID digitado.");
     }
 
-    public void deletarUsuario(Long id) {
+    public void deletarUsuario(Long id, Usuario usuario) {
+
+        System.out.println("ENTROU NO DELETE");
+        System.out.println("ID URL = " + id);
+        System.out.println("ID TOKEN = " + usuario.getId());
 
         // Code Run
-        buscarEntidadePorId(id);
-        usuarioRepository.deleteById(id);
+        if (id.equals(usuario.getId())) {
+            buscarEntidadePorId(id);
+            System.out.println("VAI DELETAR");
+            usuarioRepository.deleteById(id);
+            return;
+        }
+
+        throw new BusinessException("Usuário não possui o mesmo ID digitado.");
     }
 
     // Method for Conversion - Não Modificar
