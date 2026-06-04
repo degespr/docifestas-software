@@ -2,6 +2,7 @@ package com.software.docifestas.cfg;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +28,20 @@ public class SecurityCfg {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**").permitAll().anyRequest().authenticated())
+                                "/v3/api-docs/**").permitAll()
+
+                        // Validations for Produtos
+                        .requestMatchers(HttpMethod.POST, "/produtos").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/produtos/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/produtos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/produtos/**").hasRole("ADMIN")
+
+                        // Validations for Vendas
+                        .requestMatchers(HttpMethod.POST, "/vendas").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/vendas").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/vendas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/vendas/**").hasRole("USER")
+                        .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

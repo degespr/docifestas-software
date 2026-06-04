@@ -5,10 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 
-public class Usuario {
+public class Usuario implements UserDetails {
     // Anotações Spring
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +51,23 @@ public class Usuario {
         public String toString() {
             return "Usuário: " +nome+ " |  Email: " +email+ " |  Tipo de Login: " +isAdmin();
     }
+
+    // Gerenciador de Permissões
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        // Code Run
+        if (admin) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        }
+
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {return senha;}
+
+    @Override
+    public String getUsername() {return email;}
 }

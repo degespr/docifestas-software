@@ -2,10 +2,11 @@ package com.software.docifestas.controller;
 
 import com.software.docifestas.dto.venda.VendaRequestDTO;
 import com.software.docifestas.dto.venda.VendaResponseDTO;
-import com.software.docifestas.model.Venda;
+import com.software.docifestas.model.Usuario;
 import com.software.docifestas.service.VendaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class VendaController {
     // Codes For Aplications - POST
     @Operation(summary = "Cria uma venda no sistema.")
     @PostMapping
-    public VendaResponseDTO criarVenda(@RequestBody VendaRequestDTO request) {return vendaService.registrarVenda(request);}
+    public VendaResponseDTO criarVenda(@RequestBody VendaRequestDTO request, @AuthenticationPrincipal Usuario usuario) {return vendaService.registrarVenda(request, usuario);}
 
     // Codes For Aplications - GET
     @Operation(summary = "Lista todas as vendas.")

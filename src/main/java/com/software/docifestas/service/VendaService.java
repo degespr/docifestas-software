@@ -11,14 +11,12 @@ import com.software.docifestas.model.Produto;
 import com.software.docifestas.model.Usuario;
 import com.software.docifestas.model.Venda;
 import com.software.docifestas.repository.ProdutoRepository;
-import com.software.docifestas.repository.UsuarioRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VendaService {
@@ -30,13 +28,8 @@ public class VendaService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
     // Functions of System
-    public VendaResponseDTO registrarVenda(VendaRequestDTO request) {
-        Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+    public VendaResponseDTO registrarVenda(VendaRequestDTO request, Usuario usuario) {
 
         Venda venda = new Venda();
         venda.setUsuario(usuario);
