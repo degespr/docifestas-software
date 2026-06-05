@@ -22,18 +22,14 @@ public class UsuarioService {
 
     public UsuarioResponseDTO salvar(UsuarioRequestDTO request) {
     // Code Run
-        // Validations
-        if (request.getNome() == null) {
-            throw new BusinessException("Nome inválido! Insira um nome válido.");
-        }
+        // Validation - Email
+        validarEmail(request.getEmail());
 
-        if (request.getEmail() == null || !request.getEmail().contains("@")) {
-            throw new BusinessException("Email inválido!");
-        }
+        // Validation - Senha
+        validarSenha(request.getSenha());
 
-        if (request.getSenha() == null || request.getSenha().length() < 7) {
-            throw new BusinessException("Tipo de senha inválida!");
-        }
+        // Validation - Nome
+        validarNome(request.getNome());
 
         // Code Rule
         Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(request.getEmail());
@@ -73,10 +69,17 @@ public class UsuarioService {
         if (id.equals(usuario.getId())) {
             Usuario usuarioExistente = buscarEntidadePorId(id);
 
-            usuarioExistente.setNome(request.getNome());
+            // Validation's
+            validarEmail(request.getEmail());
+            validarSenha(request.getSenha());
+            validarNome(request.getNome());
+
+            // Applications
             usuarioExistente.setEmail(request.getEmail());
             usuarioExistente.setSenha(request.getSenha());
+            usuarioExistente.setNome(request.getNome());
 
+            // Update
             Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
             return toDTO(usuarioAtualizado);
         }
@@ -86,14 +89,9 @@ public class UsuarioService {
 
     public void deletarUsuario(Long id, Usuario usuario) {
 
-        System.out.println("ENTROU NO DELETE");
-        System.out.println("ID URL = " + id);
-        System.out.println("ID TOKEN = " + usuario.getId());
-
         // Code Run
         if (id.equals(usuario.getId())) {
             buscarEntidadePorId(id);
-            System.out.println("VAI DELETAR");
             usuarioRepository.deleteById(id);
             return;
         }
@@ -120,5 +118,50 @@ public class UsuarioService {
         dto.setAdmin(usuario.isAdmin());
 
         return dto;
+    }
+
+    // Method's for Refactoring - Nome
+    private void validarNome(String nome) {
+
+        // Code Run
+        if (nome == null) {
+            throw new BusinessException("Nome inválido! Insira um nome válido.");
+        }
+
+        else if (nome.trim().isEmpty()) {
+            throw new BusinessException("Nome inválido! Insira um nome válido.");
+
+        }
+    }
+
+    // Method's for Refactoring - Senha
+    private void validarSenha(String senha) {
+
+        // Code Run
+        if (senha == null) {
+            throw new BusinessException("Tipo de senha inválida!");
+        }
+
+        else if (senha.trim().isEmpty()) {
+            throw new BusinessException("Tipo de senha inválida!");
+        }
+
+        else if (senha.length() < 7) {
+            throw new BusinessException("Tipo de senha inválida!");
+        }
+    }
+
+    // Method's for Refactoring - Email
+    private void validarEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        // Code Run
+        if (email == null) {
+            throw new BusinessException("Email inválido!");
+        }
+
+        if (!email.matches(regex)) {
+            throw new BusinessException("Email inválido!");
+        }
     }
 }
