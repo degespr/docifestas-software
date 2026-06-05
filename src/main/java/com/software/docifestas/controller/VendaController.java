@@ -32,4 +32,8 @@ public class VendaController {
     @Operation(summary = "Busca uma venda no sistema.")
     @GetMapping("/{id}")
     public VendaResponseDTO buscarVenda(@PathVariable Long id) {return vendaService.buscarVenda(id);}
+
+    @Operation(summary = "Busca os pedidos do próprio cliente.")
+    @GetMapping("/minhas")
+    public List<VendaResponseDTO> listarMinhasVendas(@AuthenticationPrincipal Usuario usuario) {return vendaService.listarMinhasVendas(usuario);}
 }

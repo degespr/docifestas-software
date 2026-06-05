@@ -1,5 +1,6 @@
 package com.software.docifestas.cfg;
 
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,6 +40,7 @@ public class SecurityCfg {
                         // Validations for Vendas
                         .requestMatchers(HttpMethod.POST, "/vendas").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/vendas").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/vendas/minhas").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/vendas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/vendas/**").hasRole("USER")
 

@@ -5,8 +5,8 @@ import com.software.docifestas.dto.produto.ProdutoResponseDTO;
 import com.software.docifestas.exception.BusinessException;
 import com.software.docifestas.exception.ResourceNotFoundException;
 import com.software.docifestas.model.Produto;
+import com.software.docifestas.repository.ItemVendaRepository;
 import com.software.docifestas.repository.ProdutoRepository;
-import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private VendaRepository vendaRepository;
+    private ItemVendaRepository itemVendaRepository;
 
     // Functions of System
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
@@ -90,6 +90,11 @@ public class ProdutoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
         // Code Run
+        boolean produtoJaVendido = itemVendaRepository.existsByProdutoId(produto.getId());
+                if (produtoJaVendido) {
+                    throw new BusinessException("Não é possível excluir um produto que possui vendas registradas.");
+                }
+
         produtoRepository.delete(produto);
     }
 

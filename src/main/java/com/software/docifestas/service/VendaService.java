@@ -13,6 +13,7 @@ import com.software.docifestas.model.Venda;
 import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -80,6 +81,15 @@ public class VendaService {
 
         for (Venda venda : vendas) {
             listaDTO.add(toDTO(venda));
+        } return listaDTO;
+    }
+
+    public List<VendaResponseDTO> listarMinhasVendas(Usuario usuario) {
+        List<Venda> minhasVendas = vendaRepository.findByUsuarioId(usuario.getId());
+        List<VendaResponseDTO> listaDTO = new ArrayList<>();
+
+        for (Venda v : minhasVendas) {
+            listaDTO.add(toDTO(v));
         } return listaDTO;
     }
 
