@@ -13,7 +13,6 @@ import com.software.docifestas.model.Venda;
 import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +35,15 @@ public class VendaService {
         venda.setUsuario(usuario);
         venda.setData(java.time.LocalDateTime.now());
         java.math.BigDecimal valorTotal = java.math.BigDecimal.ZERO;
+
+        // Validation's
+        if (request.getItens() == null) {
+            throw new BusinessException("Não é possível registrar uma venda sem proutos.");
+        }
+
+        if (request.getItens().isEmpty()) {
+            throw new BusinessException("Não é possível registrar uma venda sem produtos.");
+        }
 
         // Code Run
         for (ItemVendaRequestDTO item : request.getItens()) {

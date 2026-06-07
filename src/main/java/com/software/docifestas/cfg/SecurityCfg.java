@@ -49,7 +49,7 @@ public class SecurityCfg {
                         .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("USER")
 
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

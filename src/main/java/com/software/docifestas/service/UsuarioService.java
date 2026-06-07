@@ -6,6 +6,7 @@ import com.software.docifestas.exception.BusinessException;
 import com.software.docifestas.exception.ResourceNotFoundException;
 import com.software.docifestas.repository.UsuarioRepository;
 import com.software.docifestas.model.Usuario;
+import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class UsuarioService {
    // Atributos By Dege
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private VendaRepository vendaRepository;
 
     public UsuarioResponseDTO salvar(UsuarioRequestDTO request) {
     // Code Run
@@ -89,14 +93,18 @@ public class UsuarioService {
 
     public void deletarUsuario(Long id, Usuario usuario) {
 
-        // Code Run
-        if (id.equals(usuario.getId())) {
-            buscarEntidadePorId(id);
-            usuarioRepository.deleteById(id);
-            return;
+        if (!id.equals(usuario.getId())) {
+            throw new BusinessException("Usuário não possui o mesmo ID digitado.");
         }
 
-        throw new BusinessException("Usuário não possui o mesmo ID digitado.");
+        Usuario usuarioExistente = buscarEntidadePorId(id);
+
+        boolean usuarioComVendas = vendaRepository.existsByUsuarioId(id);
+        if (usuarioComVendas) {
+            throw new BusinessException("Não é possível excluir um usuário que possui vendas registradas.");
+        }
+
+        usuarioRepository.delete(usuarioExistente);
     }
 
     // Method for Conversion - Não Modificar
