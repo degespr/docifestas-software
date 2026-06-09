@@ -69,12 +69,19 @@ public class UsuarioService {
 
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO request, Usuario usuario) {
 
+        // Validation
+        Optional<Usuario> usuarioComMesmoEmail = usuarioRepository.findByEmail(request.getEmail());
+
         // Code Run
         if (id.equals(usuario.getId())) {
             Usuario usuarioExistente = buscarEntidadePorId(id);
 
             // Validation's
             validarEmail(request.getEmail());
+            if (usuarioComMesmoEmail.isPresent() && !usuarioComMesmoEmail.get().getId().equals(id)) {
+                throw new BusinessException("Email já cadastrado por outro usuário.");
+            }
+
             validarSenha(request.getSenha());
             validarNome(request.getNome());
 
@@ -136,7 +143,7 @@ public class UsuarioService {
             throw new BusinessException("Nome inválido! Insira um nome válido.");
         }
 
-        else if (nome.trim().isEmpty()) {
+        if (nome.trim().isEmpty()) {
             throw new BusinessException("Nome inválido! Insira um nome válido.");
 
         }
@@ -150,11 +157,11 @@ public class UsuarioService {
             throw new BusinessException("Tipo de senha inválida!");
         }
 
-        else if (senha.trim().isEmpty()) {
+        if (senha.trim().isEmpty()) {
             throw new BusinessException("Tipo de senha inválida!");
         }
 
-        else if (senha.length() < 7) {
+        if (senha.length() < 7) {
             throw new BusinessException("Tipo de senha inválida!");
         }
     }
