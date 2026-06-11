@@ -38,7 +38,7 @@ public class VendaService {
 
         // Validation's
         if (request.getItens() == null) {
-            throw new BusinessException("Não é possível registrar uma venda sem proutos.");
+            throw new BusinessException("Não é possível registrar uma venda sem produtos.");
         }
 
         if (request.getItens().isEmpty()) {
@@ -131,5 +131,12 @@ public class VendaService {
 
         dto.setItens(itensDTO);
         return dto;
+    }
+
+    // Method's for Refactoring - Item Vendas
+    private void validarItensVenda(ItemVenda itemVenda) {
+        if (itemVenda == null) {
+            throw new BusinessException("A lista de itens não pode estar vazia.");
+        }
     }
 }

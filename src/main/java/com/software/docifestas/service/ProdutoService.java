@@ -29,15 +29,18 @@ public class ProdutoService {
     public ProdutoResponseDTO salvar(ProdutoRequestDTO request) {
         Optional<Produto> produtoNoBanco = produtoRepository.findByNomeProduto(request.getNomeProduto());
 
+        // Validation's
+        validarNomeProduto(request.getNomeProduto());
+        validarEstoque(request.getEstoque());
+        validarPreco(request.getPreco());
+        validarCategoria(request.getCategoria());
+
         // Code Run
         if (produtoNoBanco.isPresent()) {
             throw new BusinessException("Já existe um produto com este nome!");
         }
 
-        if (request.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BusinessException("Preço deve ser maior que zero");
-        }
-
+        // Code Rules - Extras
         Produto produto = new Produto();
         produto.setNomeProduto(request.getNomeProduto());
         produto.setCategoria(request.getCategoria());
@@ -67,14 +70,21 @@ public class ProdutoService {
     }
 
     public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO request) {
-        Produto produtoNoBanco = produtoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
+        Produto produtoNoBanco = produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
+        Optional<Produto> produtoComMesmoNome = produtoRepository.findByNomeProduto(request.getNomeProduto());
+
+        // Validation's
+        validarNomeProduto(request.getNomeProduto());
+        validarEstoque(request.getEstoque());
+        validarPreco(request.getPreco());
+        validarCategoria(request.getCategoria());
 
         // Code Run
-        if (request.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BusinessException("Preço deve ser maior que zero");
+        if (produtoComMesmoNome.isPresent() && !produtoComMesmoNome.get().getId().equals(id)) {
+            throw new BusinessException("Já existe um produto com esse nome.");
         }
 
+        // Code Rules - Extras
         produtoNoBanco.setNomeProduto(request.getNomeProduto());
         produtoNoBanco.setCategoria(request.getCategoria());
         produtoNoBanco.setPreco(request.getPreco());
@@ -91,9 +101,9 @@ public class ProdutoService {
 
         // Code Run
         boolean produtoJaVendido = itemVendaRepository.existsByProdutoId(produto.getId());
-                if (produtoJaVendido) {
-                    throw new BusinessException("Não é possível excluir um produto que possui vendas registradas.");
-                }
+        if (produtoJaVendido) {
+            throw new BusinessException("Não é possível excluir um produto que possui vendas registradas.");
+        }
 
         produtoRepository.delete(produto);
     }
@@ -109,5 +119,46 @@ public class ProdutoService {
         response.setEstoque(produto.getEstoque());
 
         return response;
+    }
+
+
+    // Method's for Refactoring - NomeProduto
+    private void validarNomeProduto(String nomeProduto) {
+        if (nomeProduto == null) {
+            throw new BusinessException("Nome inválido! Insira um nome válido.");
+        }
+
+        if (nomeProduto.trim().isEmpty()) {
+            throw new BusinessException("Nome inválido! Insira um nome válido.");
+        }
+    }
+
+    // Method's for Refactoring - Estoque
+    private void validarEstoque(int estoque) {
+        if (estoque < 0) {
+            throw new BusinessException("Estoque não pode ser negativo.");
+        }
+    }
+
+    // Method's for Refactoring - Preço
+    private void validarPreco(BigDecimal preco) {
+        if (preco == null) {
+            throw new BusinessException("Preço inválido! Insira um preço válido.");
+        }
+
+        if (preco.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("Preço inválido! O preço deve ser maior que zero.");
+        }
+    }
+
+    // Method's for Refactoring - Categoria
+    private void validarCategoria(String categoria) {
+        if (categoria == null) {
+            throw new BusinessException("Categoria não pode estar vazia.");
+        }
+
+        if (categoria.trim().isEmpty()) {
+            throw new BusinessException("Categoria não pode estar vazia.");
+        }
     }
 }
