@@ -20,7 +20,7 @@ public class ProdutoResponseDTO {
     private BigDecimal preco;
 
     @Schema(description = "Quantidade em estoque", example = "100")
-    private Integer estoque;
+    private int estoque;
 
     // Getter
     public Long getId() {return id;}

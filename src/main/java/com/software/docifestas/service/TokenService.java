@@ -7,15 +7,17 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class TokenService {
     // Constant
-    private static final String SECRET = "doci-festas-secret";
+    @Value("${api.security.token.secret}")
+    private String secret;
 
     // Functions of System
     public String gerarToken(Usuario usuario) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
+        Algorithm algorithm = Algorithm.HMAC256(secret);
 
         // Code Run
         return JWT.create()
@@ -35,7 +37,7 @@ public class TokenService {
     }
 
     public String validarToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
+        Algorithm algorithm = Algorithm.HMAC256(secret);
 
         // Code Run
         try {

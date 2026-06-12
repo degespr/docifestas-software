@@ -10,7 +10,7 @@ public class ItemVendaResponseDTO {
     @Schema(description = "Nome do produto", example = "Brigadeiro")
     private String nomeProduto;
 
-    @Schema(description = "Quantidade do produto em estoque", example = "20")
+    @Schema(description = "Quantidade que o cliente deseja comprar", example = "20")
     private int quantidade;
 
     @Schema(description = "Preço do produto", example = "3.50")

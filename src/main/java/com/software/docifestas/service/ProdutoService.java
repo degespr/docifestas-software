@@ -1,5 +1,6 @@
 package com.software.docifestas.service;
 
+import com.software.docifestas.dto.ItemVenda.ItemVendaRequestDTO;
 import com.software.docifestas.dto.produto.ProdutoRequestDTO;
 import com.software.docifestas.dto.produto.ProdutoResponseDTO;
 import com.software.docifestas.exception.BusinessException;
@@ -134,8 +135,8 @@ public class ProdutoService {
     }
 
     // Method's for Refactoring - Estoque
-    private void validarEstoque(int estoque) {
-        if (estoque < 0) {
+    private void validarEstoque(Integer estoque) {
+        if (estoque == null || estoque < 0) {
             throw new BusinessException("Estoque não pode ser negativo.");
         }
     }

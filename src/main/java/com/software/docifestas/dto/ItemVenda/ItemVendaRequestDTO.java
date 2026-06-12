@@ -8,7 +8,7 @@ public class ItemVendaRequestDTO {
     @Schema(description = "ID do produto", example = "1")
     private Long produtoId;
 
-    @Schema(description = "Quantidade do produto em estoque", example = "20")
+    @Schema(description = "Quantidade que o cliente deseja comprar", example = "20")
     private int quantidade;
 
     // Getter

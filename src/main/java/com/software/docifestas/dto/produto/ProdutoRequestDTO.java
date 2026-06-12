@@ -17,7 +17,7 @@ public class ProdutoRequestDTO {
     private BigDecimal preco;
 
     @Schema(description = "Quantidade disponível em estoque", example = "100")
-    private Integer estoque;
+    private int estoque;
 
     // Getter
     public String getNomeProduto() {return nomeProduto;}

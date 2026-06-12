@@ -10,13 +10,13 @@ import java.util.List;
 public class VendaResponseDTO {
 
     // Atributos By Dege
-    @Schema(description = "ID do usuário", example = "1")
+    @Schema(description = "ID da venda", example = "1")
     private Long id;
 
     @Schema(description = "Nome do usuário", example = "Diego Oliveira")
     private String nomeUsuario;
 
-    @Schema(description = "Preço da compra", example = "R$ 10.00")
+    @Schema(description = "Preço da compra", example = "10.00")
     private BigDecimal valorTotal;
 
     @Schema(description = "Data da compra", example = "2026/01/01")

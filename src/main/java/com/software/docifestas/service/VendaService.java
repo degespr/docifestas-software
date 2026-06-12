@@ -14,7 +14,6 @@ import com.software.docifestas.repository.ProdutoRepository;
 import com.software.docifestas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,26 +36,15 @@ public class VendaService {
         java.math.BigDecimal valorTotal = java.math.BigDecimal.ZERO;
 
         // Validation's
-        if (request.getItens() == null) {
-            throw new BusinessException("Não é possível registrar uma venda sem produtos.");
-        }
-
-        if (request.getItens().isEmpty()) {
-            throw new BusinessException("Não é possível registrar uma venda sem produtos.");
-        }
+        validarItensVenda(request.getItens());
 
         // Code Run
         for (ItemVendaRequestDTO item : request.getItens()) {
             Produto produto = produtoRepository.findById(item.getProdutoId())
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado!"));
 
-            if (item.getQuantidade() <= 0) {
-                throw new BusinessException("Quantidade inválida!");
-            }
-
-            if (produto.getEstoque() < item.getQuantidade()) {
-                throw new BusinessException("Estoque insuficiente!");
-            }
+            // Validation's
+            validarEstoqueDisponivel(produto, item.getQuantidade());
 
             java.math.BigDecimal precoUnitario = produto.getPreco();
             java.math.BigDecimal subtotal = precoUnitario.multiply(
@@ -133,10 +121,27 @@ public class VendaService {
         return dto;
     }
 
-    // Method's for Refactoring - Item Vendas
-    private void validarItensVenda(ItemVenda itemVenda) {
-        if (itemVenda == null) {
-            throw new BusinessException("A lista de itens não pode estar vazia.");
+    // Method's for Refactoring - Quantidade
+    private void validarQuantidade(Integer quantidade) {
+        if (quantidade == null || quantidade <= 0) {
+            throw new BusinessException("A quantidade de produtos deve ser maior que zero.");
+        }
+    }
+    // Method's for Refactoring - Item Venda
+    private void validarItensVenda(List<ItemVendaRequestDTO> itens) {
+        if (itens == null || itens.isEmpty()) {
+            throw new BusinessException("A venda deve conter ao menos um produto.");
+        }
+
+        for (ItemVendaRequestDTO item : itens) {
+            validarQuantidade(item.getQuantidade());
+        }
+    }
+
+    // Method's for Refactoring - Estoque
+    private void validarEstoqueDisponivel(Produto produto, Integer quantidade) {
+        if (produto.getEstoque() < quantidade) {
+            throw new BusinessException("Estoque insuficiente para o produto: " + produto.getNomeProduto());
         }
     }
 }
